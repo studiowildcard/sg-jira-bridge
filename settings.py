@@ -100,7 +100,7 @@ SYNC = {
         "syncer": "sg_jira.TaskIssueSyncer",
         # And its specific settings which are passed to its __init__ method
         "settings": {
-            "issue_type": "Task"
+            "issue_type": "10009"
         },
     },
     "asset_hierarchy": {

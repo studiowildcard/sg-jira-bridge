@@ -482,7 +482,7 @@ def create_server(port, settings, keyfile=None, certfile=None):
     :returns: The HTTP Server
     :type: :class:`BaseHTTPServer.BaseHTTPRequestHandler`
     """
-    httpd = Server(settings, ("localhost", port), RequestHandler)
+    httpd = Server(settings, ('', port), RequestHandler)
     if keyfile and certfile:
         # Activate HTTPS.
         httpd.socket = ssl.wrap_socket(

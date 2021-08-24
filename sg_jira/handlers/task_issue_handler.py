@@ -56,11 +56,10 @@ class TaskIssueHandler(EntityIssueHandler):
         """
         return {
             "wtg": "To Do",
-            "rdy": "Open",
+            "rdy": "To Do",
             "ip": "In Progress",
             "fin": "Done",
-            "hld": "Backlog",
-            "omt": "Closed",
+            "hld": "Blocked"
         }
 
     @property

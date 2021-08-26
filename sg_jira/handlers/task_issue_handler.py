@@ -32,6 +32,7 @@ class TaskIssueHandler(EntityIssueHandler):
         "due_date": "duedate",
         "est_in_mins": "timetracking",  # time tracking needs to be enabled in Jira.
         "addressings_cc": None,
+        "step.Step.code": "customfield_10082",
     }
 
     # Define the mapping between Jira Issue fields and Shotgun Task fields
@@ -55,11 +56,11 @@ class TaskIssueHandler(EntityIssueHandler):
         Jira Issue status names.
         """
         return {
-            "wtg": "To Do",
-            "rdy": "To Do",
+            "wtg": "Waiting To Start",
+            "rdy": "Ready To Start",
             "ip": "In Progress",
-            "fin": "Done",
-            "hld": "Blocked"
+            "fin": "Final",
+            "hld": "On Hold"
         }
 
     @property
@@ -226,6 +227,7 @@ class TaskIssueHandler(EntityIssueHandler):
                 timetracking={
                     "originalEstimate": "%d m" % (sg_entity["est_in_mins"] or 0)
                 },
+                customfield_10082=sg_entity["step.Step.code"],
             )
             self._shotgun.update(
                 sg_entity["type"],

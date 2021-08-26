@@ -22,6 +22,7 @@ class AssetIssueHandler(EntityIssueHandler):
     # Define the mapping between Shotgun Asset fields and Jira Issue fields
     __ASSET_FIELDS_MAPPING = {
         "code": "summary",
+        "code": "customfield_10011", # Epic Name
         "description": "description",
         "tags": "labels",
         "created_by": "reporter",
@@ -63,11 +64,10 @@ class AssetIssueHandler(EntityIssueHandler):
         """
         return {
             "wtg": "To Do",
-            "rdy": "Open",
+            "rdy": "To Do",
             "ip": "In Progress",
             "fin": "Done",
-            "hld": "Backlog",
-            "omt": "Closed",
+            "hld": "Blocked"
         }
 
     @property
@@ -303,6 +303,7 @@ class AssetIssueHandler(EntityIssueHandler):
                     timetracking={
                         "originalEstimate": "0 m"  # Null estimate in the case it is mandatory
                     },
+                    customfield_10011=shotgun_asset["code"],
                 )
                 self._shotgun.update(
                     shotgun_asset["type"],

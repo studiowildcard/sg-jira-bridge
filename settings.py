@@ -95,21 +95,21 @@ LOGGING = {
 sys.path.append(os.path.abspath("./examples"))
 
 SYNC = {
-    "default": {
-        # The syncer class to use
-        "syncer": "sg_jira.TaskIssueSyncer",
-        # And its specific settings which are passed to its __init__ method
-        "settings": {
-            "issue_type": "10009"
-        },
-    },
-    "asset_hierarchy": {
+    # "default": {
+    #     # The syncer class to use
+    #     "syncer": "sg_jira.TaskIssueSyncer",
+    #     # And its specific settings which are passed to its __init__ method
+    #     "settings": {
+    #         "issue_type": "10009"
+    #     },
+    # },
+    "default": { #"asset_hierarchy": {
         # The syncer class to use
         "syncer": "asset_hierarchy.AssetHierarchySyncer",
         # And its specific settings which are passed to its __init__ method
         "settings": {
-            "asset_issue_type": "Story",
-            "task_issue_type": "Task",
+            "asset_issue_type": "10000",
+            "task_issue_type": "ShotGrid Task",
         },
     },
     "test": {

@@ -299,6 +299,7 @@ class AssetIssueHandler(EntityIssueHandler):
                     shotgun_asset,
                     jira_project,
                     self._issue_type,
+                    description=shotgun_asset["description"],
                     summary=shotgun_asset["code"],
                     timetracking={
                         "originalEstimate": "0 m"  # Null estimate in the case it is mandatory
@@ -328,17 +329,23 @@ class AssetIssueHandler(EntityIssueHandler):
                         "Linking Jira Issue %s to %s"
                         % (jira_issue.key, sg_task[SHOTGUN_JIRA_ID_FIELD])
                     )
-                    self._jira.create_issue_link(
-                        type=self.__JIRA_PARENT_LINK_TYPE,
-                        # Note: depending on the link type, e.g. "blocks" or
-                        # "is blocked", the inward and outward values might need
-                        # to be swapped
-                        inwardIssue=sg_task[SHOTGUN_JIRA_ID_FIELD],
-                        outwardIssue=jira_issue.key,
-                        comment={
-                            "body": "Linking %s to %s"
-                            % (shotgun_asset["code"], sg_task["content"],),
-                        },
+                    # TODO: Use this to relate Asset tasks to eachother instead of to the Asset,
+                    #       since we are adding the jira issues to the Epic of the Asset (below)
+                    # self._jira.create_issue_link(
+                    #     type=self.__JIRA_PARENT_LINK_TYPE,
+                    #     # Note: depending on the link type, e.g. "blocks" or
+                    #     # "is blocked", the inward and outward values might need
+                    #     # to be swapped
+                    #     inwardIssue=sg_task[SHOTGUN_JIRA_ID_FIELD],
+                    #     outwardIssue=jira_issue.key,
+                    #     comment={
+                    #         "body": "Linking %s to %s"
+                    #         % (shotgun_asset["code"], sg_task["content"],),
+                    #     },
+                    # )
+                    self._jira.add_issues_to_epic(
+                        epic_id=jira_issue.key,
+                        issue_keys=[sg_task[SHOTGUN_JIRA_ID_FIELD]]
                     )
                     updated = True
                 else:
@@ -437,9 +444,14 @@ class AssetIssueHandler(EntityIssueHandler):
         :param shotgun_task: A ShotGrid Task dictionary.
         :returns: ``True`` if any update happened, ``False`` otherwise.
         """
+        
+        find_task = self._shotgun.find_one(
+            "Task", [["id", "is", shotgun_task.get("id")]], ["entity"]
+        )
+
         # Retrieve the Asset linked to the Task, if any
         shotgun_asset = self._shotgun.find_one(
-            "Asset", [["tasks", "is", shotgun_task]], self._shotgun_asset_fields
+            find_task.get("entity").get("type"), [["tasks", "is", shotgun_task]], self._shotgun_asset_fields
         )
         # make sure we have a full entity needed with the injected "name" key, etc.
         shotgun_asset = self._shotgun.consolidate_entity(

@@ -320,6 +320,10 @@ class AssetIssueHandler(EntityIssueHandler):
                 updated = True
 
             for sg_task in sg_tasks:
+                # Give the task issue a more descriptive name in Jira that includes the Asset
+                task_issue = self._jira.issue(sg_task[SHOTGUN_JIRA_ID_FIELD])
+                task_issue.update({"summary":jira_issue.fields.summary + " - " + task_issue.fields.summary})
+                
                 issue_link = self._get_jira_issue_link(
                     jira_issue, sg_task[SHOTGUN_JIRA_ID_FIELD]
                 )

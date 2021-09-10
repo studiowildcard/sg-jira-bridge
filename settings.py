@@ -108,8 +108,8 @@ SYNC = {
         "syncer": "asset_hierarchy.AssetHierarchySyncer",
         # And its specific settings which are passed to its __init__ method
         "settings": {
-            "asset_issue_type": "10000",
-            "task_issue_type": "ShotGrid Task",
+            "asset_issue_type": "10062",
+            "task_issue_type": "10064",
         },
     },
     "test": {

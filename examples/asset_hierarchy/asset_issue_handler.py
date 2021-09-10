@@ -329,24 +329,22 @@ class AssetIssueHandler(EntityIssueHandler):
                         "Linking Jira Issue %s to %s"
                         % (jira_issue.key, sg_task[SHOTGUN_JIRA_ID_FIELD])
                     )
-                    # TODO: Use this to relate Asset tasks to eachother instead of to the Asset,
-                    #       since we are adding the jira issues to the Epic of the Asset (below)
-                    # self._jira.create_issue_link(
-                    #     type=self.__JIRA_PARENT_LINK_TYPE,
-                    #     # Note: depending on the link type, e.g. "blocks" or
-                    #     # "is blocked", the inward and outward values might need
-                    #     # to be swapped
-                    #     inwardIssue=sg_task[SHOTGUN_JIRA_ID_FIELD],
-                    #     outwardIssue=jira_issue.key,
-                    #     comment={
-                    #         "body": "Linking %s to %s"
-                    #         % (shotgun_asset["code"], sg_task["content"],),
-                    #     },
-                    # )
-                    self._jira.add_issues_to_epic(
-                        epic_id=jira_issue.key,
-                        issue_keys=[sg_task[SHOTGUN_JIRA_ID_FIELD]]
+                    self._jira.create_issue_link(
+                        type=self.__JIRA_PARENT_LINK_TYPE,
+                        # Note: depending on the link type, e.g. "blocks" or
+                        # "is blocked", the inward and outward values might need
+                        # to be swapped
+                        inwardIssue=sg_task[SHOTGUN_JIRA_ID_FIELD],
+                        outwardIssue=jira_issue.key,
+                        comment={
+                            "body": "Linking %s to %s"
+                            % (shotgun_asset["code"], sg_task["content"],),
+                        },
                     )
+                    # self._jira.add_issues_to_epic(
+                    #     epic_id=jira_issue.key,
+                    #     issue_keys=[sg_task[SHOTGUN_JIRA_ID_FIELD]]
+                    # )
                     updated = True
                 else:
                     self._logger.debug(

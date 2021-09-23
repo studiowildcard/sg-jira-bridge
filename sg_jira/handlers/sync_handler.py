@@ -340,7 +340,7 @@ class SyncHandler(object):
                 raise InvalidJiraValue(shotgun_field, value, message)
             return value
 
-        if data_type in ["duration", "number"]:
+        if data_type in ["number"]:
             # Note: int Jira field changes are not available from the "to" key.
             value = change["toString"]
             if value is None:
@@ -356,6 +356,24 @@ class SyncHandler(object):
                 )
                 # Notify the caller that the value is not right
                 raise InvalidJiraValue(shotgun_field, value, message)
+
+        if data_type in ["duration"]:
+            # Note: int Jira field changes are not available from the "to" key.
+            value = change["toString"]
+            if value is None:
+                return None
+            # Validate the int value
+            try:
+                # Seems like Jira durations are in seconds and shotgrid expects minutes
+                return int(value)/60
+            except ValueError as e:
+                message = "Jira value %s is not a valid integer: %s" % (value, e)
+                # Log the original error with a traceback for debug purpose
+                self._logger.debug(
+                    message, exc_info=True,
+                )
+                # Notify the caller that the value is not right
+                raise InvalidJiraValue(shotgun_field, value, message)                
 
         if data_type == "checkbox":
             return bool(change["toString"])

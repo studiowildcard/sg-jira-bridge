@@ -45,7 +45,7 @@ class TaskIssueHandler(EntityIssueHandler):
         "assignee": "task_assignees",
         "labels": "tags",
         "duedate": "due_date",
-        "timetracking": "est_in_mins",  # time tracking needs to be enabled in Jira.
+        "timeoriginalestimate": "est_in_mins",  # time tracking needs to be enabled in Jira.
         "watches": "addressings_cc",
     }
 

@@ -63,11 +63,11 @@ class AssetIssueHandler(EntityIssueHandler):
         are Jira Issue status names.
         """
         return {
-            "wtg": "To Do",
-            "rdy": "To Do",
+            "wtg": "Waiting To Start",
+            "rdy": "Ready To Start",
             "ip": "In Progress",
-            "fin": "Done",
-            "hld": "Blocked"
+            "fin": "Final",
+            "hld": "On Hold"
         }
 
     @property

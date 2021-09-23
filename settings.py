@@ -73,7 +73,7 @@ LOGGING = {
     "handlers": {
         # Print out any message to stdout
         "console": {
-            "level": "INFO",
+            "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "standard"
         },
@@ -108,8 +108,8 @@ SYNC = {
         "syncer": "asset_hierarchy.AssetHierarchySyncer",
         # And its specific settings which are passed to its __init__ method
         "settings": {
-            "asset_issue_type": "10062",
-            "task_issue_type": "10064",
+            "asset_issue_type": "ShotGrid Asset",
+            "task_issue_type": "ShotGrid Task",
         },
     },
     "test": {
